@@ -7,23 +7,21 @@ when you want to build or start a project you need to set up a file structure fo
 you need to provide yiur file structur in text or markdown(.md) file like this :-
 
 Text file
-'''
+```
 root
   - sub1
     - sub1a
     - sub1b
   - sub2
   - sub3
-
-'''
+```
 
 markdown file
-
-'''
+```
 root
   ├ sub1
   | ├ sub1a
   | └ sub1b
   ├ sub2
   └ sub3
-'''
+```
