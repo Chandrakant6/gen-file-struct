@@ -1,0 +1,6 @@
+root
+  - sub1
+    - sub1a
+    - sub1b
+  - sub2
+  - sub3
