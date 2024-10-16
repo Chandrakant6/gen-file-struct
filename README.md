@@ -1,5 +1,6 @@
 # generate-file-structure
 generate file structure from given text or md file
+it only work on linux to run on windoes install wls
 
 ## what it does
 when you want to build or start a project you need to set up a file structure for that project, It is not an easy task for large project therefore this project is build to automate that task to set up your project file structure.
@@ -25,3 +26,18 @@ root
   ├ sub2
   └ sub3
 ```
+
+## setup 
+download repo
+```
+git clone https://github.com/Chandrakant6/generate-file-structure
+```
+make it executable
+```
+chmod +x gen-file-struct
+```
+use it, on parent folder 
+```
+gen-file-struct <text file>
+```
+and all done
