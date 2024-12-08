@@ -7,7 +7,7 @@ when you want to build or start a project you need to set up a file structure fo
 
 you need to provide yiur file structur in text or markdown(.md) file like this :-
 
-Text file
+Text / Markdown file
 ```
 root
   - sub1
@@ -17,16 +17,6 @@ root
   - sub3
 ```
 
-markdown file
-```
-root
-  ├ sub1
-  | ├ sub1a
-  | └ sub1b
-  ├ sub2
-  └ sub3
-```
-
 ## setup 
 download repo
 ```
@@ -34,10 +24,10 @@ git clone https://github.com/Chandrakant6/generate-file-structure
 ```
 make it executable
 ```
-chmod +x gen-file-struct
+chmod +x gen-struct.sh
 ```
 use it, on parent folder 
 ```
-gen-file-struct <text file>
+gen-struct.sh <structure.txt>
 ```
 and all done
