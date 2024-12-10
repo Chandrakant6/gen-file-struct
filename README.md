@@ -10,11 +10,13 @@ you need to provide yiur file structur in text or markdown(.md) file like this :
 Text / Markdown file
 ```
 root
-  - sub1
-    - sub1a
-    - sub1b
-  - sub2
-  - sub3
+  app.py
+  dir1
+    file1.txt
+    file2.txt
+  dir2
+    app.py
+    file3.txt
 ```
 
 ## setup 
