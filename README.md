@@ -26,8 +26,8 @@ make it executable
 ```
 chmod +x gen-struct.sh
 ```
-use it, on parent folder 
+use it
 ```
-gen-struct.sh <structure.txt>
+gen-struct.sh <project-strut.txt> </path/to/root>
 ```
 and all done
