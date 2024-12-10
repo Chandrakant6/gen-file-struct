@@ -3,33 +3,38 @@ import os
 def generate_structure(file, root):
     prev_indent = 0
     current_path = ""
-
+    
     with open(file, 'r') as f:
         for line in f:
-            # Calculate the number of leading spaces to determine indentation
-            indent = len(line) - len(line.lstrip())
-            # Get the directory name by stripping leading spaces and '-'
-            dir_name = line.strip().lstrip('-').strip()
-
-            # Adjust the path based on indentation
-            if indent > prev_indent:
-                current_path = os.path.join(current_path, dir_name)
-            elif indent < prev_indent:
-                # Go up in the directory tree
-                current_path = os.path.dirname(current_path)
-                current_path = os.path.join(current_path, dir_name)
+            indent = len(line) - len(line.lstrip())  # Calculate indent level
+            line_content = line.strip().lstrip('-').strip()  # Remove leading spaces and dash
+            
+            if not line_content:  # Skip empty lines
+                continue
+            
+            # If it's a file (not a directory), create it
+            if '.' in line_content:  # Simple check to see if it's a file (e.g., app.py, file.txt)
+                # Create the file
+                file_path = os.path.join(root, current_path, line_content)
+                os.makedirs(os.path.dirname(file_path), exist_ok=True)
+                open(file_path, 'w').close()  # Create an empty file
             else:
-                # Same level as before
-                current_path = os.path.join(current_path, dir_name)
+                # If it's a directory, adjust the path based on indentation
+                if indent > prev_indent:
+                    current_path = os.path.join(current_path, line_content)  # Going deeper
+                elif indent < prev_indent:
+                    current_path = os.path.dirname(current_path)  # Going up
+                    current_path = os.path.join(current_path, line_content)
+                else:
+                    current_path = os.path.join(current_path, line_content)
 
-            # Create the directory
-            os.makedirs(os.path.join(root, current_path), exist_ok=True)
+                # Create the directory
+                os.makedirs(os.path.join(root, current_path), exist_ok=True)
 
-            # Update previous indent level
-            prev_indent = indent
+            prev_indent = indent  # Update the previous indent level
 
 
-# Usage check
+# Usage
 if __name__ == "__main__":
     import sys
 
@@ -40,6 +45,5 @@ if __name__ == "__main__":
     input_file = sys.argv[1]
     root_directory = sys.argv[2]
 
-    # Generate the directory structure
     generate_structure(input_file, root_directory)
-    print("Directory structure created successfully.")
+    print("Directory and file structure created successfully.")
