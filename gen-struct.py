@@ -1,63 +1,45 @@
 import os
 
-def parse_structure(file_path):
-    """
-    Parse the directory structure from a text file.
-    
-    :param file_path: Path to the text file containing the structure.
-    :return: Parsed directory structure as a nested dictionary.
-    """
-    structure = {}
-    current_path = []
-    
-    with open(file_path, 'r') as file:
-        for line in file:
-            # Strip leading/trailing whitespace and check for indentation
-            stripped_line = line.strip()
-            
-            # Skip empty lines
-            if not stripped_line:
-                continue
-            
-            # Count the number of leading spaces (indicates depth in the tree)
-            indent_level = len(line) - len(stripped_line)
-            
-            # Determine the current directory level based on indentation
-            while len(current_path) > indent_level:
-                current_path.pop()
-            
-            # Add the current directory to the path
-            current_path.append(stripped_line)
-            
-            # Add to the structure dictionary
-            temp = structure
-            for part in current_path:
-                temp = temp.setdefault(part, {})
-    
-    return structure
+def generate_structure(file, root):
+    prev_indent = 0
+    current_path = ""
 
-def create_directories(base_path, structure):
-    """
-    Recursively create directories based on the given structure.
-    
-    :param base_path: The base directory where the structure will be created.
-    :param structure: The nested dictionary representing the directory tree.
-    """
-    for dir_name, sub_structure in structure.items():
-        full_path = os.path.join(base_path, dir_name)
-        
-        if not os.path.exists(full_path):
-            os.makedirs(full_path)
-            print(f"Created directory: {full_path}")
-        
-        # Recurse to create subdirectories
-        create_directories(full_path, sub_structure)
+    with open(file, 'r') as f:
+        for line in f:
+            # Calculate the number of leading spaces to determine indentation
+            indent = len(line) - len(line.lstrip())
+            # Get the directory name by stripping leading spaces and '-'
+            dir_name = line.strip().lstrip('-').strip()
 
-# Main function to read the file and create directories
-def main(input_file, base_path='generated_structure'):
-    structure = parse_structure(input_file)
-    create_directories(base_path, structure)
+            # Adjust the path based on indentation
+            if indent > prev_indent:
+                current_path = os.path.join(current_path, dir_name)
+            elif indent < prev_indent:
+                # Go up in the directory tree
+                current_path = os.path.dirname(current_path)
+                current_path = os.path.join(current_path, dir_name)
+            else:
+                # Same level as before
+                current_path = os.path.join(current_path, dir_name)
 
-# Example usage
-input_file = 'structure.txt'  # Path to the input text file
-main(input_file)
+            # Create the directory
+            os.makedirs(os.path.join(root, current_path), exist_ok=True)
+
+            # Update previous indent level
+            prev_indent = indent
+
+
+# Usage check
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) != 3:
+        print("Usage: python generate_structure.py <input_file> <root_directory>")
+        sys.exit(1)
+
+    input_file = sys.argv[1]
+    root_directory = sys.argv[2]
+
+    # Generate the directory structure
+    generate_structure(input_file, root_directory)
+    print("Directory structure created successfully.")
